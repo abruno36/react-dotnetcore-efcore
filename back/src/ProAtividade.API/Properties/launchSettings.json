@@ -14,12 +14,9 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "swagger",
-      "applicationUrl": "https://localhost:7252;http://localhost:5252",
-      "sslPort": 7252,
+      "applicationUrl": "http://localhost:5252",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_Kestrel__Certificates__Default__Password": "1234",
-        "ASPNETCORE_Kestrel__Certificates__Default__Path": "C:\\Users\\antonio.bruno\\source\\repos\\https.pfx"
+        "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
     "IIS Express": {

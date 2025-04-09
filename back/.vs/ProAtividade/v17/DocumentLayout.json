@@ -1,0 +1,78 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|c:\\projetos\\udemy\\react\\react_aspnetcore\\back\\src\\proatividade.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|solutionrelative:src\\proatividade.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|c:\\projetos\\udemy\\react\\react_aspnetcore\\back\\src\\proatividade.api\\controllers\\atividadecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|solutionrelative:src\\proatividade.api\\controllers\\atividadecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|c:\\projetos\\udemy\\react\\react_aspnetcore\\back\\src\\proatividade.api\\proatividade.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{003856DF-B966-405B-AE9E-7C0D32352143}|src\\ProAtividade.API\\ProAtividade.API.csproj|solutionrelative:src\\proatividade.api\\proatividade.api.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{116d2292-e37d-41cd-a077-ebacac4c8cc4}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\Program.cs",
+              "RelativeDocumentMoniker": "src\\ProAtividade.API\\Program.cs",
+              "ToolTip": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\Program.cs",
+              "RelativeToolTip": "src\\ProAtividade.API\\Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAMAAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T10:46:09.647Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AtividadeController.cs",
+              "DocumentMoniker": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\Controllers\\AtividadeController.cs",
+              "RelativeDocumentMoniker": "src\\ProAtividade.API\\Controllers\\AtividadeController.cs",
+              "ToolTip": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\Controllers\\AtividadeController.cs",
+              "RelativeToolTip": "src\\ProAtividade.API\\Controllers\\AtividadeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAqwAAAAAAGAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-04-09T10:38:03.622Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ProAtividade.API.csproj",
+              "DocumentMoniker": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\ProAtividade.API.csproj",
+              "RelativeDocumentMoniker": "src\\ProAtividade.API\\ProAtividade.API.csproj",
+              "ToolTip": "C:\\Projetos\\Udemy\\REACT\\REACT_ASPNETCORE\\back\\src\\ProAtividade.API\\ProAtividade.API.csproj",
+              "RelativeToolTip": "src\\ProAtividade.API\\ProAtividade.API.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABQAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-04-09T10:37:35.883Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
