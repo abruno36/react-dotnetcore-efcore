@@ -36,7 +36,10 @@ namespace ProAtividade.API.Controllers
             _context.Atividades.Add(atividade);
 
             if (_context.SaveChanges() > 0)
-                return CreatedAtAction(nameof(Post), atividade); 
+            {
+                var mensagem = $"Atividade \"{atividade.Titulo}\" inserida com sucesso.";
+                return CreatedAtAction(nameof(Post), new { id = atividade.Id }, new { mensagem, atividade });
+            }
 
             return BadRequest("Não foi possível adicionar a atividade.");
         }
@@ -56,7 +59,8 @@ namespace ProAtividade.API.Controllers
             
             _context.SaveChanges();
 
-            return Ok(atividade);
+            var mensagem = $"Atividade \"{atividade.Titulo}\" alterada com sucesso.";
+            return Ok(new { mensagem, atividade });
         }
 
 
