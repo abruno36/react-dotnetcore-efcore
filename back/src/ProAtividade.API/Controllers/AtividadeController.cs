@@ -25,9 +25,14 @@ namespace ProAtividade.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public Atividade  Get(int id)
+        public IActionResult Get(int id)
         {
-            return _context.Atividades.FirstOrDefault(ativ => ativ.Id == id);
+            var atividade = _context.Atividades.FirstOrDefault(atv => atv.Id == id);
+
+            if (atividade == null)
+                return NotFound($"Atividade com ID {id} não foi localizada.");
+
+            return Ok(atividade);
         }
 
         [HttpPost]

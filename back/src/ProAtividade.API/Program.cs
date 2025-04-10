@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -11,19 +12,20 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddDbContext<DataContext>(
-  options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+    options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
 
-//builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
-//builder.Services.AddScoped<IGeralRepo, GeralRepo>();
-//builder.Services.AddScoped<IAtividadeService, AtividadeService>();
+// builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
+// builder.Services.AddScoped<IGeralRepo, GeralRepo>();
+// builder.Services.AddScoped<IAtividadeService, AtividadeService>();
 
-builder.Services.AddControllers();
-                // .AddJsonOptions(options =>
-                //         {
-                //             options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                //         }
-                //     );
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                        {
+                            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+                        }
+                    );
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
