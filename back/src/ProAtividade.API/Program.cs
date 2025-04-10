@@ -1,15 +1,18 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using ProAtividade.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-//builder.Services.AddDbContext<DataContext>(
-//   options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
-//);
+builder.Services.AddDbContext<DataContext>(
+  options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
+);
 
 //builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
 //builder.Services.AddScoped<IGeralRepo, GeralRepo>();
