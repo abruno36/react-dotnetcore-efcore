@@ -20,11 +20,12 @@ builder.Services.AddDbContext<DataContext>(
 // builder.Services.AddScoped<IAtividadeService, AtividadeService>();
 
 builder.Services.AddControllers()
-                .AddJsonOptions(options =>
-                        {
-                            options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
-                        }
-                    );
+    .AddNewtonsoftJson(options =>
+    {
+        options.SerializerSettings.Converters.Add(new Newtonsoft.Json.Converters.StringEnumConverter());
+    });
+
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>

@@ -36,36 +36,29 @@ namespace ProAtividade.API.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([FromBody] Atividade atividade)
+        public Atividade Post(Atividade atividade)
         {
             _context.Atividades.Add(atividade);
 
             if (_context.SaveChanges() > 0)
-            {
-                var mensagem = $"Atividade \"{atividade.Titulo}\" inserida com sucesso.";
-                return CreatedAtAction(nameof(Post), new { id = atividade.Id }, new { mensagem, atividade });
-            }
-
-            return BadRequest("Não foi possível adicionar a atividade.");
+                return _context.Atividades.FirstOrDefault(atv => atv.Id == atividade.Id);
+            else
+                throw new Exception("Problemas ao incluir uma atividade");
+            
         }
 
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] Atividade atividade)
+        public Atividade Put(int id, Atividade atividade)
         {
             if (atividade.Id != id)
-                return BadRequest("ID da atividade não confere com o ID informado na rota.");
+                throw new Exception("Problemas ao alterar uma atividade");
 
-            var atividadeExistente = _context.Atividades.FirstOrDefault(atv => atv.Id == id);
+            _context.Atividades.Update(atividade);
 
-            if (atividadeExistente == null)
-                return NotFound("Atividade não encontrada.");
-
-            _context.Entry(atividadeExistente).CurrentValues.SetValues(atividade);
-            
-            _context.SaveChanges();
-
-            var mensagem = $"Atividade \"{atividade.Titulo}\" alterada com sucesso.";
-            return Ok(new { mensagem, atividade });
+            if (_context.SaveChanges() > 0)
+                return _context.Atividades.FirstOrDefault(atv => atv.Id == atividade.Id);
+            else
+                throw new Exception("Problemas ao alterar uma atividade");
         }
 
 
@@ -75,7 +68,7 @@ namespace ProAtividade.API.Controllers
             var atividade = _context.Atividades.FirstOrDefault(atv => atv.Id == id);
 
             if (atividade == null)
-                return NotFound("Atividade não localizada para exclusão.");
+                throw new Exception("Problemas ao deletar uma atividade");
 
             _context.Atividades.Remove(atividade);
             _context.SaveChanges();

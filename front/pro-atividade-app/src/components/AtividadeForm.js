@@ -1,24 +1,37 @@
-function AtividadeForm({ atividade, setAtividade, handleAddAtividade }) {
+function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtividade, cancelarAtividade }) {
   function handleChange(e) {
     const { name, value } = e.target;
     setAtividade({ ...atividade, [name]: value });
   }
 
+  
+  const atividadeInicial = {
+    id: 0,
+    titulo: "",
+    prioridade: "0",
+    descricao: "",
+  };
+
   function handleCancelar(e) {
     e.preventDefault();
-    setAtividade({
-      id: 0,
-      titulo: "",
-      prioridade: "0",
-      descricao: "",
-    });
+  
+    cancelarAtividade();
+    setAtividade(atividadeInicial);
+  };
+  
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    if (atividade.id === 0) {
+      addAtividade(atividade);
+    } else {
+      atualizarAtividade(atividade);
+    }
   }
 
   return (
-    <form className="form-control" onSubmit={handleAddAtividade}>
-      <h1 className="mt-3">
-        {atividade.id === 0 ? "Nova Atividade" : `Editando Atividade #${atividade.id}`}
-      </h1>
+    <form className="form-control" onSubmit={handleSubmit}>
+      
 
       <div className="mb-3">
         <label className="form-label">Título</label>
@@ -39,10 +52,10 @@ function AtividadeForm({ atividade, setAtividade, handleAddAtividade }) {
           value={atividade.prioridade}
           onChange={handleChange}
         >
-          <option value="0">Selecionar...</option>
-          <option value="1">Baixa</option>
-          <option value="2">Normal</option>
-          <option value="3">Alta</option>
+          <option value="NaoDefinido">Selecionar...</option>
+          <option value="Baixa">Baixa</option>
+          <option value="Normal">Normal</option>
+          <option value="Alta">Alta</option>
         </select>
       </div>
 
@@ -60,10 +73,13 @@ function AtividadeForm({ atividade, setAtividade, handleAddAtividade }) {
         {atividade.id === 0 ? "Salvar" : "Atualizar"}
       </button>
 
-      {atividade.id !== 0 && (
-        <button className="btn btn-warning ms-2" onClick={handleCancelar}>
-          Cancelar
-        </button>
+      {atividade?.id !== 0 && (
+        <button
+            className="btn btn-warning ms-2"
+            onClick={handleCancelar}
+          >
+            Cancelar
+      </button>
       )}
     </form>
   );

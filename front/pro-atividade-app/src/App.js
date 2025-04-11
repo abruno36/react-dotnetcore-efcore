@@ -1,23 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import { Button, Modal } from 'react-bootstrap';
+import api from './api/atividade';
 import AtividadeForm from "./components/AtividadeForm";
 import AtividadeLista from "./components/AtividadeLista";
-import { toast } from 'react-toastify';
 
 function App() {
-  const initialState = [
-    {
-      id: 1,
-      prioridade: "3",
-      titulo: "Título atividade Um",
-      descricao: "Primeira Atividade",
-    },
-    {
-      id: 2,
-      prioridade: "1",
-      titulo: "Título atividade Dois",
-      descricao: "Segunda Atividade",
-    },
-  ];
+  // const [showAtividadeModal, setShowAtividadeModal] = useState(false);
+  // const [smShowConfirmModal, setSmShowConfirmModal] = useState(false);
+
+  const [show, setShow] = useState(false);
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+  
+  // const [smShowConfirmModal, setSmShowConfirmModal] = useState(false);
+
+  const [atividades, setAtividades] = useState([]);
+  const [atividade, setAtividade] = useState({
+    id: 0,
+    titulo: "",
+    prioridade: "0",
+    descricao: ""
+  });
 
   const atividadeInicial = {
     id: 0,
@@ -26,80 +30,157 @@ function App() {
     descricao: "",
   };
 
-  const [atividades, setAtividades] = useState(initialState);
-  const [atividade, setAtividade] = useState(atividadeInicial);
+  // const atividadeInicial: IAtividade = {
+  //     id: 0,
+  //     titulo: '',
+  //     prioridade: "0",
+  //     descricao: '',
+  // };  
+  // const handleAtiviadeModal = () =>
+  //   setShowAtividadeModal(!showAtividadeModal);
 
-  function handleDeleteAtv(id) {
-    const atividadesFiltradas = atividades.filter((a) => a.id !== id);
-    setAtividades(atividadesFiltradas);
+  // const handleConfirmModal = (id: number) => {
+  //     if (id !== 0 && id !== undefined) {
+  //         const atividade = atividades.filter(
+  //             (atividade) => atividade.id === id
+  //         );
+  //         setAtividade(atividade[0]);
+  //     } else {
+  //         setAtividade(atividadeInicial);
+  //     }
+  //     setSmShowConfirmModal(!smShowConfirmModal);
+  // };
+  const pegaTodasAtividades = async () => {
+    const response = await api.get('atividade');
+    return response.data;
+  };
 
-    // Se estava editando essa atividade, limpa o form
-    if (atividade.id === id) {
-      setAtividade(atividadeInicial);
-    }
-  }
+  useEffect(() => {
+      const getAtividades = async () => {
+          const todasAtividades = await pegaTodasAtividades();
+          if (todasAtividades) setAtividades(todasAtividades);
+      };
+      getAtividades();
+  }, []);
 
   function handlePegaAtv(id) {
     const atv = atividades.find((a) => a.id === id);
     if (atv) {
       setAtividade(atv);
     }
-  }
+  };
 
-  function handleAddAtividade(e) {
-    e.preventDefault();
-
-    if (!atividade.descricao || !atividade.titulo || atividade.prioridade === "0") {
+  const addAtividade = async (ativ) => {
+    if (!ativ.descricao || !ativ.titulo || ativ.prioridade === "0") {
       toast.warn("Preencha todos os campos.");
       return;
-    }
+    }  
+    const response = await api.post('atividade', ativ);
 
-    // Se for edição
-    if (atividade.id !== 0) {
-      const atividadesAtualizadas = atividades.map((a) =>
-        a.id === atividade.id ? atividade : a
+    setAtividades([...atividades, response.data]);
+
+    setAtividade({
+      id: 0,
+      titulo: "",
+      prioridade: "0",
+      descricao: ""
+    });
+  };
+
+  const cancelarAtividade = () => {
+    setAtividade(atividadeInicial);
+  };
+
+  const deletarAtividade = async (id) => {
+    if (await api.delete(`atividade/${id}`))
+    {
+      const atividadesFiltradas = atividades.filter((a) => a.id !== id);
+      setAtividades(atividadesFiltradas);
+    }  
+  };
+
+  const atualizarAtividade = async (ativ) => {
+      const response = await api.put(`atividade/${ativ.id}`, ativ);
+      const { id } = response.data;
+      setAtividades(
+          atividades.map((item) => (item.id === id ? response.data : item))
       );
-      setAtividades(atividadesAtualizadas);
-    } else {
-      // Nova atividade
-      const novoId =
-        atividades.length > 0 ? Math.max(...atividades.map((a) => a.id)) + 1 : 1;
+      setAtividade({ id: 0 });
 
-      const novaAtividade = {
-        ...atividade,
-        id: novoId,
-      };
-
-      setAtividades([...atividades, novaAtividade]);
-    }
-
-    // Limpa o form
-    setAtividade(atividadeInicial);
-  }
-
-  function handleCancelar() {
-    setAtividade(atividadeInicial);
-  }
+      setAtividade({
+        id: 0,
+        titulo: "",
+        prioridade: "0",
+        descricao: ""
+      });
+  };
 
   return (
     <div className="container mt-3">
-      <h1 className="text-center mb-4">Minhas Atividades</h1>
+        <div className="d-flex justify-content-between align-items-end mt-2 pb-3 border-bottom border-1">
+            <h1 className="m-0 p-0">Atividade {atividade.id !== 0 ? atividade.id : ''}</h1>
+            <Button variant='outline-secondary' onClick={handleShow}>
+                  <i className="fas fa-plus"></i>
+            </Button>
+        </div>
 
-      <AtividadeForm
-        atividade={atividade}
-        setAtividade={setAtividade}
-        handleAddAtividade={handleAddAtividade}
-        handleCancelar={handleCancelar}
-      />
 
-      <hr />
+        <AtividadeLista
+          atividades={atividades}
+          cancelarAtividade={cancelarAtividade}
+          deletarAtividade={deletarAtividade}
+          handlePegaAtv={handlePegaAtv}
+        />
 
-      <AtividadeLista
-        atividades={atividades}
-        handleDeleteAtv={handleDeleteAtv}
-        handlePegaAtv={handlePegaAtv}
-      />
-    </div>
+                <Modal show={show} onHide={handleClose}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>
+                            Atividade {atividade.id !== 0 ? atividade.id : ''}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <AtividadeForm
+                          atividade={atividade}
+                          setAtividade={setAtividade}
+                          addAtividade={addAtividade}
+                          atualizarAtividade={atualizarAtividade}
+                          cancelarAtividade={cancelarAtividade}
+                        />
+                    </Modal.Body>
+                </Modal>
+
+                {/* <Modal
+                    size='sm'
+                    show={smShowConfirmModal}
+                    onHide={handleConfirmModal}
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>
+                            Excluindo Atividade{' '}
+                            {atividade.id !== 0 ? atividade.id : ''}
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        Tem certeza que deseja Excluir a Atividade {atividade.id}
+                    </Modal.Body>
+                    <Modal.Footer className='d-flex justify-content-between'>
+                        <button
+                            className='btn btn-outline-success me-2'
+                            onClick={() => deletarAtividade(atividade.id)}
+                        >
+                            <i className='fas fa-check me-2'></i>
+                            Sim
+                        </button>
+                        <button
+                            className='btn btn-danger me-2'
+                            onClick={() => handleConfirmModal(0)}
+                        >
+                            <i className='fas fa-times me-2'></i>
+                            Não
+                        </button>
+                    </Modal.Footer>
+                </Modal> */}
+      </div>
   );
 }
 

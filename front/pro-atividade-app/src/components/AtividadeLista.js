@@ -8,7 +8,7 @@ export default function AtividadeLista(props) {
           <Atividade 
             key={ativ.Id || index}
             ativ={ativ}
-            handleDeleteAtv={props.handleDeleteAtv}
+            deletarAtividade={props.deletarAtividade}
             handlePegaAtv={props.handlePegaAtv}
           />
         ))}
