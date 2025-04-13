@@ -4,7 +4,6 @@ function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtivida
     setAtividade({ ...atividade, [name]: value });
   }
 
-  
   const atividadeInicial = {
     id: 0,
     titulo: "",
@@ -12,16 +11,14 @@ function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtivida
     descricao: "",
   };
 
-  function handleCancelar(e) {
-    e.preventDefault();
-  
+  const handleCancelar = (e) => {
+    e.preventDefault(); 
     cancelarAtividade();
     setAtividade(atividadeInicial);
   };
   
-  function handleSubmit(e) {
+  const handleSubmit= (e) => {
     e.preventDefault();
-
     if (atividade.id === 0) {
       addAtividade(atividade);
     } else {
@@ -69,17 +66,40 @@ function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtivida
         />
       </div>
 
-      <button className="btn btn-success" type="submit">
-        {atividade.id === 0 ? "Salvar" : "Atualizar"}
-      </button>
-
-      {atividade?.id !== 0 && (
-        <button
-            className="btn btn-warning ms-2"
-            onClick={handleCancelar}
+      {atividade.id === 0 ? (
+          <>
+          <button
+              className='btn btn-outline-success me-2'
+              type='submit'
           >
-            Cancelar
-      </button>
+              <i className='fas fa-plus me-2'></i>
+              Salvar
+          </button>
+          <button
+                  className='btn btn-outline-warning'
+                  onClick={handleCancelar}
+              >
+                  <i className='fas fa-plus me-2'></i>
+                  Cancelar
+              </button>
+          </>
+      ) : (
+          <>
+              <button
+                  className='btn btn-outline-success me-2'
+                  type='submit'
+              >
+                  <i className='fas fa-plus me-2'></i>
+                  Salvar
+              </button>
+              <button
+                  className='btn btn-outline-warning'
+                  onClick={handleCancelar}
+              >
+                  <i className='fas fa-plus me-2'></i>
+                  Cancelar
+              </button>
+          </>
       )}
     </form>
   );
