@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace ProAtividade.API.Data.Migrations
+namespace ProAtividade.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -15,8 +15,8 @@ namespace ProAtividade.API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Titulo = table.Column<string>(type: "TEXT", nullable: true),
-                    Descricao = table.Column<string>(type: "TEXT", nullable: true),
+                    Titulo = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Descricao = table.Column<string>(type: "varchar(255)", nullable: false),
                     DataCriacao = table.Column<DateTime>(type: "TEXT", nullable: false),
                     DataConclusao = table.Column<DateTime>(type: "TEXT", nullable: true),
                     Prioridade = table.Column<int>(type: "INTEGER", nullable: false)

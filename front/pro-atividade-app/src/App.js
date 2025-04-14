@@ -64,14 +64,25 @@ function App() {
   };
 
   const addAtividade = async (ativ) => {
-    if (!ativ.descricao || !ativ.titulo || ativ.prioridade === "0") {
-      toast.warn("Preencha todos os campos.");
-      return;
-    }  
-    const response = await api.post('atividade', ativ);
-    setAtividades([...atividades, response.data]);
+      if (!ativ.descricao || !ativ.titulo || ativ.prioridade === "0") {
+          toast.warn("Preencha todos os campos.");
+          return;
+      }
 
-    handleAtiviadeModal();
+      try {
+          const response = await api.post('atividade', ativ);
+          setAtividades([...atividades, response.data]);
+          handleAtiviadeModal();
+
+          // Mensagem de sucesso
+          toast.success(`Atividade "${response.data.titulo}" inserida com sucesso!`);
+      } catch (err) {
+          console.error("Erro ao adicionar atividade:", err.response);
+
+          // Verificar o status da resposta e exibir a mensagem correta
+          const mensagem = err.response?.data?.erro || "Erro ao adicionar atividade. Tente novamente.";
+          toast.error(mensagem);
+      }
   };
 
   const cancelarAtividade = () => {
@@ -80,23 +91,47 @@ function App() {
   };
 
   const deletarAtividade = async (id) => {
-    if (await api.delete(`atividade/${id}`))
-    {
-      const atividadesFiltradas = atividades.filter((a) => a.id !== id);
-      setAtividades(atividadesFiltradas);
-    } 
-    handleConfirmModal(0) 
+      const atividadeExcluida = atividades.find((a) => a.id === id);
+
+      try {
+          await api.delete(`atividade/${id}`);
+
+          const atividadesFiltradas = atividades.filter((a) => a.id !== id);
+          setAtividades(atividadesFiltradas);
+
+          toast.success(`Atividade "${atividadeExcluida?.titulo}" excluída com sucesso!`);
+      } catch (err) {
+          console.error("Erro ao excluir atividade:", err);
+          const mensagem = err.response?.data?.erro || "Erro ao excluir atividade. Tente novamente.";
+          toast.error(mensagem);
+      }
+
+      handleConfirmModal(0);
   };
+
 
   const atualizarAtividade = async (ativ) => {
       handleAtiviadeModal();
-      const response = await api.put(`atividade/${ativ.id}`, ativ);
-      const { id } = response.data;
-      setAtividades(
-          atividades.map((item) => (item.id === id ? response.data : item))
-      );
-      setAtividade({ id: 0 });
+      try {
+          const response = await api.put(`atividade/${ativ.id}`, ativ);
+          const { id } = response.data;
+          setAtividades(
+              atividades.map((item) => (item.id === id ? response.data : item))
+          );
+          setAtividade({ id: 0 });
+
+          // Mensagem de sucesso
+          toast.success(`Atividade "${response.data.titulo}" atualizada com sucesso!`);
+      } catch (err) {
+          console.error("Erro ao atualizar atividade:", err);
+
+          // Verificar o status da resposta e exibir a mensagem correta
+          const mensagem = err.response?.data?.erro || "Erro ao atualizar atividade. Tente novamente.";
+          toast.error(mensagem);
+      }
   };
+
+
 
   return (
     <div className="container mt-3">

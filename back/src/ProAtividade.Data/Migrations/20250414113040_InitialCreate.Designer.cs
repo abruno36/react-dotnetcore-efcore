@@ -4,22 +4,22 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using ProAtividade.API.Data;
+using ProAtividade.Data.Context;
 
 #nullable disable
 
-namespace ProAtividade.API.Data.Migrations
+namespace ProAtividade.Data.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20250410144650_Initial")]
-    partial class Initial
+    [Migration("20250414113040_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.3");
 
-            modelBuilder.Entity("ProAtividade.Api.Models.Atividade", b =>
+            modelBuilder.Entity("ProAtividade.Domain.Entities.Atividade", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,17 +32,19 @@ namespace ProAtividade.API.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("Prioridade")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
-                        .HasColumnType("TEXT");
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Atividades");
+                    b.ToTable("Atividades", (string)null);
                 });
 #pragma warning restore 612, 618
         }

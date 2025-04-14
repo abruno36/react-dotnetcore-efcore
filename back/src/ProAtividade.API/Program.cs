@@ -1,11 +1,16 @@
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using ProAtividade.API.Data;
+using ProAtividade.Data.Context;
+using ProAtividade.Data.Repositories;
+using ProAtividade.Domain.Interfaces.Repositories;
+using ProAtividade.Domain.Interfaces.Services;
+using ProAtividade.Domain.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,9 +20,9 @@ builder.Services.AddDbContext<DataContext>(
     options => options.UseSqlite(builder.Configuration.GetConnectionString("Default"))
 );
 
-// builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
-// builder.Services.AddScoped<IGeralRepo, GeralRepo>();
-// builder.Services.AddScoped<IAtividadeService, AtividadeService>();
+builder.Services.AddScoped<IAtividadeRepo, AtividadeRepo>();
+builder.Services.AddScoped<IGeralRepo, GeralRepo>();
+builder.Services.AddScoped<IAtividadeService, AtividadeService>();
 
 builder.Services.AddControllers()
     .AddNewtonsoftJson(options =>
@@ -36,13 +41,35 @@ builder.Services.AddCors();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ProAtividade.API v1"));
 }
+
+
+app.UseExceptionHandler(builder =>
+{
+    builder.Run(async context =>
+    {
+        var exception = context.Features.Get<IExceptionHandlerFeature>()?.Error;
+
+        context.Response.ContentType = "application/json";  // Garantir que o conteúdo seja JSON
+
+        if (exception is RegraDeNegocioException negocioEx)
+        {
+            context.Response.StatusCode = StatusCodes.Status400BadRequest;
+            await context.Response.WriteAsJsonAsync(new { erro = negocioEx.Message });
+        }
+        else
+        {
+            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await context.Response.WriteAsJsonAsync(new { erro = "Erro inesperado no servidor." });
+        }
+    });
+});
+
+
 
 app.UseHttpsRedirection();
 
