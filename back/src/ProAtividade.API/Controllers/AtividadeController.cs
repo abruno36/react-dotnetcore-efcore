@@ -75,30 +75,29 @@ namespace ProAtividade.API.Controllers
 
 
         [HttpPut("{id}")]
-    public async Task<IActionResult> Put(int id, Atividade model)
-    {
-        try
+        public async Task<IActionResult> Put(int id, Atividade model)
         {
-            if (model.Id != id)
-                return StatusCode(StatusCodes.Status409Conflict,
-                    "Você está tentando atualizar a atividade errada");
+            try
+            {
+                if (model.Id != id)
+                    return StatusCode(StatusCodes.Status409Conflict,
+                        "Você está tentando atualizar a atividade errada");
 
-            var atividade = await _atividadeService.AtualizarAtividade(model);
-            if (atividade == null) return NoContent();
+                var atividade = await _atividadeService.AtualizarAtividade(model);
+                if (atividade == null) return NoContent();
 
-            return Ok(atividade);
+                return Ok(atividade);
+            }
+            catch (RegraDeNegocioException negocioEx)
+            {
+                return BadRequest(new { erro = negocioEx.Message });  // Retorna erro 400 para atividades concluídas
+            }
+            catch (System.Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    $"Erro ao tentar Atualizar Atividade com id: {id}. Erro: {ex.Message}");
+            }
         }
-        catch (RegraDeNegocioException negocioEx)
-        {
-            return BadRequest(new { erro = negocioEx.Message });  // Retorna erro 400 para atividades concluídas
-        }
-        catch (System.Exception ex)
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError,
-                $"Erro ao tentar Atualizar Atividade com id: {id}. Erro: {ex.Message}");
-        }
-    }
-
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
