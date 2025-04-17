@@ -27,10 +27,8 @@ export default function AtividadeForm({ atividade, setAtividade, addAtividade, a
   }
 
   return (
-    <form className="form-control" onSubmit={handleSubmit}>
-      
-
-      <div className="mb-3">
+    <form className="row g-3" onSubmit={handleSubmit}>
+      <div className="col-md-6">
         <label className="form-label">Título</label>
         <input
           name="titulo"
@@ -41,7 +39,7 @@ export default function AtividadeForm({ atividade, setAtividade, addAtividade, a
         />
       </div>
 
-      <div className="mb-3">
+      <div className="col-md-6">
         <label className="form-label">Prioridade</label>
         <select
           name="prioridade"
@@ -56,7 +54,7 @@ export default function AtividadeForm({ atividade, setAtividade, addAtividade, a
         </select>
       </div>
 
-      <div className="mb-3">
+      <div className="col-md-12">
         <label className="form-label">Descrição</label>
         <textarea
           name="descricao"
@@ -64,43 +62,40 @@ export default function AtividadeForm({ atividade, setAtividade, addAtividade, a
           value={atividade.descricao}
           onChange={handleChange}
         />
+        <hr />
       </div>
 
-      {atividade.id === 0 ? (
+      <div className="col-12 mt-0">
+        {atividade.id === 0 ? (
           <>
-          <button
-              className='btn btn-outline-success me-2'
-              type='submit'
-          >
-              <i className='fas fa-plus me-2'></i>
+            <button className="btn btn-outline-success me-2" type="submit">
+              <i className="fas fa-plus me-2"></i>
               Salvar
-          </button>
-          <button
-                  className='btn btn-outline-warning'
-                  onClick={handleCancelar}
-              >
-                  <i className='fas fa-plus me-2'></i>
-                  Cancelar
-              </button>
+            </button>
+            <button
+              className="btn btn-outline-warning"
+              onClick={handleCancelar}
+            >
+              <i className="fas fa-plus me-2"></i>
+              Cancelar
+            </button>
           </>
-      ) : (
+        ) : (
           <>
-              <button
-                  className='btn btn-outline-success me-2'
-                  type='submit'
-              >
-                  <i className='fas fa-plus me-2'></i>
-                  Salvar
-              </button>
-              <button
-                  className='btn btn-outline-warning'
-                  onClick={handleCancelar}
-              >
-                  <i className='fas fa-plus me-2'></i>
-                  Cancelar
-              </button>
+            <button className="btn btn-outline-success me-2" type="submit">
+              <i className="fas fa-plus me-2"></i>
+              Salvar
+            </button>
+            <button
+              className="btn btn-outline-warning"
+              onClick={handleCancelar}
+            >
+              <i className="fas fa-plus me-2"></i>
+              Cancelar
+            </button>
           </>
-      )}
+        )}
+      </div>
     </form>
   );
 }
