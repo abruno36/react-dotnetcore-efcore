@@ -1,8 +1,13 @@
 {
-    "cleanUrls": true,
-    "rewrites": [
-      { "source": "/(.*)", "destination": "/" }
-    ]
-  }
-  
+  "builds": [
+    {
+      "src": "front/pro-atividade-app/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "build"
+      }
+    }
+  ]
+}
+
   
