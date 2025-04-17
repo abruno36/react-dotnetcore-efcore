@@ -1,4 +1,5 @@
 {
+  "version": 2,
   "builds": [
     {
       "src": "front/pro-atividade-app/package.json",
@@ -7,7 +8,12 @@
         "distDir": "build"
       }
     }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
-
-  
+ 
