@@ -1,11 +1,11 @@
 import React from 'react';
-import Atividade from './Atividade';
+import AtividadeItem from './AtividadeItem';
 
 export default function AtividadeLista(props) {
   return (
     <div className="mt-3">
         {props.atividades.map((ativ, index) => (
-          <Atividade 
+          <AtividadeItem 
             key={ativ.Id || index}
             ativ={ativ}
             handleConfirmModal={props.handleConfirmModal}

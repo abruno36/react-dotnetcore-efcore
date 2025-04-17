@@ -1,4 +1,4 @@
-function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtividade, cancelarAtividade }) {
+export default function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtividade, cancelarAtividade }) {
   function handleChange(e) {
     const { name, value } = e.target;
     setAtividade({ ...atividade, [name]: value });
@@ -104,5 +104,3 @@ function AtividadeForm({ atividade, setAtividade, addAtividade, atualizarAtivida
     </form>
   );
 }
-
-export default AtividadeForm;
