@@ -5,15 +5,14 @@
       "src": "front/pro-atividade-app/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "build"
+        "distDir": "front/pro-atividade-app/build"
       }
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/front/pro-atividade-app/build/index.html"
     }
   ]
 }
- 
