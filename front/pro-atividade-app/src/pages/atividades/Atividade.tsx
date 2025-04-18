@@ -5,30 +5,28 @@ import api from '../../api/atividade';
 import TitlePage from "../../components/TitlePage";
 import AtividadeLista from './AtividadeLista';
 import AtividadeForm from './AtividadeForm';
+import { IAtividade, Prioridade } from '../../model/atividade';
+import axios from "axios";
 
-export default function Atividade() {
+const atividadeInicial: IAtividade = {
+  id: 0,
+  titulo: '',
+  prioridade: Prioridade.NaoDefinido,
+  descricao: '',
+};
+
+const Atividade = () => {
   const [showAtividadeModal, setShowAtividadeModal] = useState(false);
   const [smShowConfirmModal, setSmShowConfirmModal] = useState(false);
+
+  const [atividades, setAtividades] = useState<IAtividade[]>([]);
+  const [atividade, setAtividade] = useState<IAtividade>(atividadeInicial);
 
   const handleAtiviadeModal = () =>
     setShowAtividadeModal(!showAtividadeModal);
 
-  const [atividades, setAtividades] = useState([]);
-  const [atividade, setAtividade] = useState({
-    id: 0,
-    titulo: "",
-    prioridade: "0",
-    descricao: ""
-  });
 
-  const atividadeInicial = {
-    id: 0,
-    titulo: "",
-    prioridade: "0",
-    descricao: "",
-  };
-
-  const handleConfirmModal = (id) => {
+  const handleConfirmModal = (id: number) => {
       if (id !== 0 && id !== undefined) {
           const atividade = atividades.filter(
               (atividade) => atividade.id === id
@@ -53,10 +51,10 @@ export default function Atividade() {
       getAtividades();
   }, []);
 
-  const handlePegaAtv = (id) => {
-    const atividade = atividades.filter((atividade) => atividade.id === id);
-    setAtividade(atividade[0]);
-    handleAtiviadeModal(false);
+  const pegarAtividade = (id: number) => {
+      const atividade = atividades.filter((atividade) => atividade.id === id);
+      setAtividade(atividade[0]);
+      handleAtiviadeModal();
   };
 
   const novaAtividade = () => {
@@ -64,34 +62,37 @@ export default function Atividade() {
       handleAtiviadeModal();
   };
 
-  const addAtividade = async (ativ) => {
-      if (!ativ.descricao || !ativ.titulo || ativ.prioridade === "0") {
-          toast.warn("Preencha todos os campos.");
-          return;
-      }
+  const addAtividade = async (ativ: IAtividade) => {
+    if (!ativ.descricao || !ativ.titulo || !ativ.prioridade) {
+        toast.warn("Preencha todos os campos.");
+        return;
+    }
 
-      try {
-          const response = await api.post('atividade', ativ);
-          setAtividades([...atividades, response.data]);
-          handleAtiviadeModal();
+    try {
+        const response = await api.post('atividade', ativ);
+        setAtividades([...atividades, response.data]);
+        handleAtiviadeModal();
 
-          // Mensagem de sucesso
-          toast.success(`Atividade "${response.data.titulo}" inserida com sucesso!`);
+        // Mensagem de sucesso
+        toast.success(`Atividade "${response.data.titulo}" inserida com sucesso!`);
       } catch (err) {
-          console.error("Erro ao adicionar atividade:", err.response);
-
-          // Verificar o status da resposta e exibir a mensagem correta
-          const mensagem = err.response?.data?.erro || "Erro ao adicionar atividade. Tente novamente.";
+        if (axios.isAxiosError(err)) {
+          const mensagem =
+            err.response?.data?.erro ||
+            "Erro ao adicionar atividade. Tente novamente.";
           toast.error(mensagem);
+        } else {
+          toast.error("Erro inesperado. Tente novamente.");
+        }
       }
-  };
+};
 
   const cancelarAtividade = () => {
     setAtividade(atividadeInicial);
     handleAtiviadeModal();
   };
 
-  const deletarAtividade = async (id) => {
+  const deletarAtividade = async (id: number) => {
       const atividadeExcluida = atividades.find((a) => a.id === id);
 
       try {
@@ -101,17 +102,22 @@ export default function Atividade() {
           setAtividades(atividadesFiltradas);
 
           toast.success(`Atividade "${atividadeExcluida?.titulo}" excluída com sucesso!`);
-      } catch (err) {
-          console.error("Erro ao excluir atividade:", err);
-          const mensagem = err.response?.data?.erro || "Erro ao excluir atividade. Tente novamente.";
-          toast.error(mensagem);
-      }
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            const mensagem =
+              err.response?.data?.erro ||
+              "Erro ao deletar atividade. Tente novamente.";
+            toast.error(mensagem);
+          } else {
+            toast.error("Erro inesperado. Tente novamente.");
+          }
+        }
 
       handleConfirmModal(0);
   };
 
 
-  const atualizarAtividade = async (ativ) => {
+  const atualizarAtividade = async (ativ: IAtividade) => {
       handleAtiviadeModal();
       try {
           const response = await api.put(`atividade/${ativ.id}`, ativ);
@@ -119,17 +125,20 @@ export default function Atividade() {
           setAtividades(
               atividades.map((item) => (item.id === id ? response.data : item))
           );
-          setAtividade({ id: 0 });
+          setAtividade(response.data);
 
           // Mensagem de sucesso
           toast.success(`Atividade "${response.data.titulo}" atualizada com sucesso!`);
-      } catch (err) {
-          console.error("Erro ao atualizar atividade:", err);
-
-          // Verificar o status da resposta e exibir a mensagem correta
-          const mensagem = err.response?.data?.erro || "Erro ao atualizar atividade. Tente novamente.";
-          toast.error(mensagem);
-      }
+        } catch (err) {
+          if (axios.isAxiosError(err)) {
+            const mensagem =
+              err.response?.data?.erro ||
+              "Erro ao atualizar atividade. Tente novamente.";
+            toast.error(mensagem);
+          } else {
+            toast.error("Erro inesperado. Tente novamente.");
+          }
+        }
   };
 
   return (
@@ -144,8 +153,7 @@ export default function Atividade() {
 
       <AtividadeLista
         atividades={atividades}
-        cancelarAtividade={cancelarAtividade}
-        handlePegaAtv={handlePegaAtv}
+        pegarAtividade={pegarAtividade}
         handleConfirmModal={handleConfirmModal}
       />
 
@@ -157,16 +165,15 @@ export default function Atividade() {
         </Modal.Header>
         <Modal.Body>
           <AtividadeForm
-            atividade={atividade}
-            setAtividade={setAtividade}
             addAtividade={addAtividade}
-            atualizarAtividade={atualizarAtividade}
             cancelarAtividade={cancelarAtividade}
+            atualizarAtividade={atualizarAtividade}
+            ativSelecionada={atividade}
           />
         </Modal.Body>
       </Modal>
 
-      <Modal size="sm" show={smShowConfirmModal} onHide={handleConfirmModal}>
+      <Modal size="sm" show={smShowConfirmModal} onHide={handleAtiviadeModal}>
         <Modal.Header closeButton>
           <Modal.Title>
             Excluindo Atividade {atividade.id !== 0 ? atividade.id : ""}
@@ -195,3 +202,5 @@ export default function Atividade() {
     </div>
   );
 }
+
+export default Atividade;

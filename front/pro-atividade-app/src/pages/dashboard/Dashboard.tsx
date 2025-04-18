@@ -2,7 +2,7 @@ import React from 'react';
 import TitlePage from '../../components/TitlePage';
 import { Card, Row, Col } from 'react-bootstrap';
 
-const Dashboard = () => {
+const Dashboard: React.FC = () => {
     return (
         <>
             <TitlePage title='Dashboard' />

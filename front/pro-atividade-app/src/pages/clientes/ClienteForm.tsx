@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import TitlePage from '../../components/TitlePage';
 
-const ClienteForm = () => {
+const ClienteForm: React.FC = () => {
     let navigate = useNavigate();
     let { id } = useParams();
 

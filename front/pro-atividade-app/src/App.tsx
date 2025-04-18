@@ -5,7 +5,7 @@ import Cliente from './pages/clientes/Cliente';
 import PageNotFound from "./pages/PageNotFound";
 import ClienteForm from "./pages/clientes/ClienteForm";
 
-export default function App() {
+const App: React.FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Dashboard />} />
@@ -18,3 +18,5 @@ export default function App() {
     </Routes>
   );
 }
+
+export default App;

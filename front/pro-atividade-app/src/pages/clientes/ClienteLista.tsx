@@ -45,7 +45,7 @@ const ClienteLista = () => {
     const navigate = useNavigate();
     const [termoBusca, setTermoBusca] = useState('');
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTermoBusca(e.target.value);
     };
 

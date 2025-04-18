@@ -1,7 +1,7 @@
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { NavLink, useLocation } from 'react-router-dom';
 
-const Menu = () => {
+const Menu: React.FC = () => {
     const getActiveRoute = useLocation().pathname ? 'Active' : '';
 
     return (

@@ -1,7 +1,7 @@
 import React from 'react';
 import ClienteLista from './ClienteLista';
 
-const Cliente = () => {
+const Cliente: React.FC = () => {
     return (
         <>
             <ClienteLista />
